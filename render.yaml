@@ -17,13 +17,9 @@ services:
       - key: NVIDIA_NIM_IMAGE_MODEL
         value: black-forest-labs/flux.1-schnell
       - key: CHROMA_DIR
-        value: /data/chroma
+        value: /tmp/chroma_data
       - key: SQLITE_PATH
-        value: /data/resume_analyzer.db
-    disk:
-      name: dossier-data
-      mountPath: /data
-      sizeGB: 1
+        value: /tmp/resume_analyzer.db
 
   - type: web
     name: dossier-frontend
