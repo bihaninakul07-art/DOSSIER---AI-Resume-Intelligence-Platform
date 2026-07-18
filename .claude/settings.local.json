@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import app.main; print\\('Backend imports OK'\\)\")",
+      "Bash(pip install *)",
+      "Bash(/home/nakul3101/Downloads/resume-analyzer/backend/venv/bin/pip install *)",
+      "Bash(/home/nakul3101/Downloads/resume-analyzer/backend/venv/bin/python *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -N -X POST http://localhost:8000/api/analyze -F \"file=@/home/nakul3101/Downloads/resume-analyzer/frontend/app/page.tsx\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -N -X POST http://localhost:8000/api/analyze -F \"file=@/tmp/test_resume.pdf\")"
+    ]
+  }
+}

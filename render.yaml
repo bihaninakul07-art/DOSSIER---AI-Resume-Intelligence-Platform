@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: dossier-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: NVIDIA_NIM_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: NVIDIA_NIM_MODEL
+        value: nvidia/nemotron-3-ultra
+      - key: NVIDIA_NIM_IMAGE_MODEL
+        value: black-forest-labs/flux.1-schnell
+      - key: CHROMA_DIR
+        value: /data/chroma
+      - key: SQLITE_PATH
+        value: /data/resume_analyzer.db
+    disk:
+      name: dossier-data
+      mountPath: /data
+      sizeGB: 1
+
+  - type: web
+    name: dossier-frontend
+    runtime: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    plan: free
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
