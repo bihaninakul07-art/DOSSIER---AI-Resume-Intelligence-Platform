@@ -13,7 +13,7 @@ services:
       - key: GROQ_MODEL
         value: llama-3.3-70b-versatile
       - key: NVIDIA_NIM_MODEL
-        value: nvidia/nemotron-3-ultra
+        value: nvidia/llama-3.3-nemotron-super-49b-v1.5
       - key: NVIDIA_NIM_IMAGE_MODEL
         value: black-forest-labs/flux.1-schnell
       - key: CHROMA_DIR

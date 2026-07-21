@@ -1,11 +1,18 @@
-"""Poster generation using NVIDIA NIM (FLUX) via NvidiaNimImageClient."""
+"""Poster generation via Pollinations.ai - keyless, free, FLUX-backed.
+NVIDIA's free-tier image endpoints are inconsistent/model-specific, so
+this avoids that entirely instead of fighting bespoke invoke URLs.
+"""
+import base64
 import logging
-import os
+import urllib.parse
 
-from app.llm.nvidia_client import NvidiaNimImageClient
+import requests
+
 from app.models.schemas import Recommendation
 
 logger = logging.getLogger(__name__)
+
+POLLINATIONS_URL = "https://image.pollinations.ai/prompt/{prompt}"
 
 
 def _build_prompt(recommendation: Recommendation) -> str:
@@ -21,31 +28,13 @@ def _build_prompt(recommendation: Recommendation) -> str:
 
 
 async def generate_poster(recommendation: Recommendation) -> str | None:
-    """
-    Generate career roadmap poster using NVIDIA NIM FLUX.
-    Returns base64 data URL or None if not configured/failed.
-    """
-    # Check both possible env var names for backward compatibility
-    api_key = os.getenv("NVIDIA_NIM_API_KEY") or os.getenv("NVIDIA_API_KEY")
-    if not api_key:
-        logger.info("No image generation provider configured (need NVIDIA_NIM_API_KEY or NVIDIA_API_KEY)")
-        return None
-
     prompt = _build_prompt(recommendation)
-    client = NvidiaNimImageClient()
-
-    if not client.available:
-        logger.warning("NvidiaNimImageClient not available")
-        return None
-
+    url = POLLINATIONS_URL.format(prompt=urllib.parse.quote(prompt))
     try:
-        data_url = await client.generate(prompt)
-        if data_url:
-            return data_url
-        logger.warning("NVIDIA NIM image generation returned no image")
-        return None
+        resp = requests.get(url, params={"width": 1024, "height": 1024, "nologo": "true"}, timeout=60)
+        resp.raise_for_status()
+        b64 = base64.b64encode(resp.content).decode("utf-8")
+        return f"data:image/png;base64,{b64}"
     except Exception as e:
         logger.warning("Poster generation failed: %s", e)
         return None
-    finally:
-        await client.close()
