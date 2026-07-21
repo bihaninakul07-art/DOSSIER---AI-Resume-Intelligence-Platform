@@ -13,7 +13,7 @@ async def run_market_trend_agent(profile: ExtractedProfile) -> list[str]:
     query = f"in-demand skills {profile.primary_domain} engineer 2026"
     try:
         from duckduckgo_search import DDGS
-        with DDGS(timeout=5) as ddgs:
+        with DDGS() as ddgs:
             results = list(ddgs.text(query, max_results=3))
         return [r.get("body", "")[:300] for r in results if r.get("body")]
     except Exception as e:
