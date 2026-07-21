@@ -52,34 +52,63 @@ export async function analyzeResume(
     return;
   }
 
-  const reader = res.body.getReader();
+const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
+  let currentEvent: string | null = null;
+  let currentDataLines: string[] = [];
+
+  function dispatch() {
+    if (!currentEvent || currentDataLines.length === 0) {
+      currentEvent = null;
+      currentDataLines = [];
+      return;
+    }
+    const data = currentDataLines.join("\n");
+    try {
+      if (currentEvent === "status") {
+        onStatus(JSON.parse(data));
+      } else if (currentEvent === "complete") {
+        onComplete(JSON.parse(data));
+      } else if (currentEvent === "error") {
+        onError(JSON.parse(data).message);
+      }
+    } catch (err) {
+      console.error("SSE parse error:", err, data);
+      onError("Failed to parse server response.");
+    }
+    currentEvent = null;
+    currentDataLines = [];
+  }
+
+  function processLine(line: string) {
+    if (line === "") {
+      // Blank line = end of one event. Dispatch and reset.
+      dispatch();
+      return;
+    }
+    if (line.startsWith("event:")) {
+      currentEvent = line.slice(6).trim();
+    } else if (line.startsWith("data:")) {
+      currentDataLines.push(line.slice(5).replace(/^ /, ""));
+    }
+    // Ignore comment lines (starting with ":") and anything else per SSE spec.
+  }
 
   while (true) {
     const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-
-    const chunks = buffer.split("\n\n");
-    buffer = chunks.pop() || "";
-
-    for (const chunk of chunks) {
-      const eventMatch = chunk.match(/^event:\s*(.+)$/m);
-      const dataMatch = chunk.match(/^data:\s*(.+)$/m);
-      if (!eventMatch || !dataMatch) continue;
-
-      const eventType = eventMatch[1].trim();
-      const data = dataMatch[1].trim();
-
-      if (eventType === "status") {
-        onStatus(JSON.parse(data));
-      } else if (eventType === "complete") {
-        onComplete(JSON.parse(data));
-      } else if (eventType === "error") {
-        onError(JSON.parse(data).message);
-      }
+    if (done) {
+      buffer += decoder.decode(); // flush any pending multi-byte chars
+      const lines = buffer.split(/\r?\n/);
+      for (const line of lines) processLine(line);
+      // Final dispatch in case the stream ended without a trailing blank line.
+      dispatch();
+      break;
     }
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split(/\r?\n/);
+    buffer = lines.pop() || ""; // keep last (possibly incomplete) line in buffer
+    for (const line of lines) processLine(line);
   }
 }
 
