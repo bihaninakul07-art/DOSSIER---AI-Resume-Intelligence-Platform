@@ -1,22 +1,18 @@
 import type { Config } from "tailwindcss";
-
 const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        ink: "#0B1220",
-        surface: "#131B2E",
-        surface2: "#1B2740",
-        border: "#28345080",
-        text: "#E4E9F2",
-        muted: "#8891A7",
-        amber: "#E8A33D",
-        teal: "#3FA796",
-        rose: "#D9706C",
-        violet: "#8B7FE8",
-        pink: "#E876B0",
-        cyan: "#4FD9E8",
+        ink: "#0B0B0C",
+        surface: "#131315",
+        surface2: "#1C1C1F",
+        border: "#33333880",
+        text: "#EDEDEF",
+        muted: "#8A8A90",
+        amber: "#D89B4A",
+        teal: "#4A8C7C",
+        rose: "#B5564C",
       },
       fontFamily: {
         display: ["var(--font-fraunces)", "serif"],

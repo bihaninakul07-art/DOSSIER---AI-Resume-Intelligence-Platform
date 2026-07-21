@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 
 const STACK = [
-  { label: "Groq · Llama 3.3", color: "#4FD9E8" },
-  { label: "Gemini 2.0", color: "#8B7FE8" },
-  { label: "LangGraph", color: "#3FA796" },
-  { label: "ChromaDB + BM25", color: "#E8A33D" },
-  { label: "FLUX.1 diffusion", color: "#E876B0" },
-  { label: "fastembed", color: "#4FD9E8" },
+  { label: "NVIDIA NIM · Nemotron", color: "#D89B4A" },
+  { label: "Groq · Llama 3.3", color: "#4A8C7C" },
+  { label: "LangGraph", color: "#4A8C7C" },
+  { label: "ChromaDB + BM25", color: "#D89B4A" },
+  { label: "Pollinations · FLUX", color: "#B5564C" },
+  { label: "fastembed", color: "#D89B4A" },
 ];
 
 export default function TechBadges() {

@@ -6,13 +6,13 @@ import {
 } from "lucide-react";
 
 const STEPS = [
-  { icon: FileSearch, title: "Parse", desc: "Read the PDF into structured sections", color: "#3FA796" },
-  { icon: Brain, title: "Extract", desc: "Groq pulls skills, domain, seniority", color: "#4FD9E8" },
-  { icon: Database, title: "Retrieve", desc: "Hybrid RAG pulls role benchmarks", color: "#8B7FE8" },
-  { icon: TrendingUp, title: "Market Check", desc: "Live search for current demand", color: "#8B7FE8" },
-  { icon: Scale, title: "Critique", desc: "Gemini weighs profile vs. evidence", color: "#E876B0" },
-  { icon: Lightbulb, title: "Recommend", desc: "Cross-checked, grounded advice", color: "#E8A33D" },
-  { icon: ImageIcon, title: "Illustrate", desc: "FLUX renders your roadmap poster", color: "#E8A33D" },
+  { icon: FileSearch, title: "Parse", desc: "Read the PDF into structured sections", color: "#D89B4A" },
+  { icon: Brain, title: "Extract", desc: "Groq pulls skills, domain, seniority", color: "#4A8C7C" },
+  { icon: Database, title: "Retrieve", desc: "Hybrid RAG pulls role benchmarks", color: "#D89B4A" },
+  { icon: TrendingUp, title: "Market Check", desc: "Live search for current demand", color: "#4A8C7C" },
+  { icon: Scale, title: "Critique", desc: "NVIDIA NIM weighs profile vs. evidence", color: "#B5564C" },
+  { icon: Lightbulb, title: "Recommend", desc: "Cross-checked, grounded advice", color: "#D89B4A" },
+  { icon: ImageIcon, title: "Illustrate", desc: "FLUX renders your roadmap poster", color: "#4A8C7C" },
 ];
 
 export default function PipelinePreview() {
@@ -45,7 +45,7 @@ export default function PipelinePreview() {
             </motion.div>
             {i < STEPS.length - 1 && (
               <svg width="20" height="2" className="shrink-0 mx-1">
-                <line x1="0" y1="1" x2="20" y2="1" stroke="#28345080" strokeWidth="2" strokeDasharray="4 3" />
+                <line x1="0" y1="1" x2="20" y2="1" stroke="#33333880" strokeWidth="2" strokeDasharray="4 3" />
               </svg>
             )}
           </div>
